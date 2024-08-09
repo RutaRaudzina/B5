@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    android:label="User"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.b5.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.b5.ui.fragments.LoginFragment"
+        android:label="Login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_nav_login_to_createUserFragment"
+            app:destination="@id/createUserFragment" />
+        <action
+            android:id="@+id/action_nav_login_to_nav_home"
+            app:destination="@id/nav_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_first"
+        android:name="com.example.b5.ui.fragments.FirstFragment"
+        android:label="First"
+        tools:layout="@layout/fragment_first" />
+    <fragment
+        android:id="@+id/nav_second"
+        android:name="com.example.b5.ui.fragments.SecondFragment"
+        android:label="Second"
+        tools:layout="@layout/fragment_second" />
+    <fragment
+        android:id="@+id/nav_third"
+        android:name="com.example.b5.ui.fragments.ThirdFragment"
+        android:label="Third"
+        tools:layout="@layout/fragment_third" />
+    <fragment
+        android:id="@+id/nav_fourth"
+        android:name="com.example.b5.ui.fragments.FourthFragment"
+        android:label="Fourth"
+        tools:layout="@layout/fragment_fourth" />
+    <fragment
+        android:id="@+id/nav_fifth"
+        android:name="com.example.b5.ui.fragments.FifthFragment"
+        android:label="Fifth"
+        tools:layout="@layout/fragment_fifth" />
+    <fragment
+        android:id="@+id/nav_sixth"
+        android:name="com.example.b5.ui.fragments.SixthFragment"
+        android:label="Sixth"
+        tools:layout="@layout/fragment_sixth" />
+    <fragment
+        android:id="@+id/nav_seventh"
+        android:name="com.example.b5.ui.fragments.SeventhFragment"
+        android:label="Seventh"
+        tools:layout="@layout/fragment_seventh" />
+    <fragment
+        android:id="@+id/nav_eighth"
+        android:name="com.example.b5.ui.fragments.EighthFragment"
+        android:label="Eighth"
+        tools:layout="@layout/fragment_eighth" />
+    <fragment
+        android:id="@+id/nav_ninth"
+        android:name="com.example.b5.ui.fragments.NinthFragment"
+        android:label="Ninth"
+        tools:layout="@layout/fragment_ninth" />
+    <fragment
+        android:id="@+id/nav_tenth"
+        android:name="com.example.b5.ui.fragments.TenthFragment"
+        android:label="Tenth"
+        tools:layout="@layout/fragment_tenth" />
+    <fragment
+        android:id="@+id/createUserFragment"
+        android:name="com.example.b5.ui.fragments.CreateUserFragment"
+        android:label="fragment_create_user"
+        tools:layout="@layout/fragment_create_user" >
+        <action
+            android:id="@+id/action_createUserFragment_to_nav_login"
+            app:destination="@id/nav_login" />
+    </fragment>
+
+</navigation>

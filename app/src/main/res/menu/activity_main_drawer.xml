@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="@string/menu_home" />
+        <item
+            android:id="@+id/nav_login"
+            android:icon="@drawable/user"
+            android:title="@string/login" />
+        <item
+            android:id="@+id/nav_first"
+            android:icon="@drawable/one"
+            android:title="@string/first" />
+        <item
+            android:id="@+id/nav_second"
+            android:icon="@drawable/two"
+            android:title="@string/second" />
+        <item
+            android:id="@+id/nav_third"
+            android:icon="@drawable/three"
+            android:title="@string/third" />
+        <item
+            android:id="@+id/nav_fourth"
+            android:icon="@drawable/four"
+            android:title="@string/fourth" />
+        <item
+            android:id="@+id/nav_fifth"
+            android:icon="@drawable/five"
+            android:title="@string/fifth" />
+        <item
+            android:id="@+id/nav_sixth"
+            android:icon="@drawable/six"
+            android:title="@string/sixth" />
+        <item
+            android:id="@+id/nav_seventh"
+            android:icon="@drawable/seven"
+            android:title="@string/seventh" />
+        <item
+            android:id="@+id/nav_eighth"
+            android:icon="@drawable/eight"
+            android:title="@string/eighth" />
+        <item
+            android:id="@+id/nav_ninth"
+            android:icon="@drawable/nine"
+            android:title="@string/ninth" />
+        <item
+            android:id="@+id/nav_tenth"
+            android:icon="@drawable/ten"
+            android:title="@string/tenth" />
+    </group>
+</menu>
