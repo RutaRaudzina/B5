@@ -87,7 +87,8 @@ class MainActivity : AppCompatActivity(), TransferData {
             db = DatabaseHandler(this)
             logIn(db)
             ext.userid = this.userId
-            println("User id beck to main is: ${ext.userid}")
+            println("User id back to main is: ${ext.userid}")
         }
     }
+
 }

@@ -1,8 +1,6 @@
 package com.example.b5.ui.fragments
 
-import android.content.Context
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +13,6 @@ import com.example.b5.R
 import com.example.b5.TransferData
 import com.example.b5.database.DatabaseHandler
 import com.example.b5.ext
-import com.example.b5.ui.home.HomeFragment
 
 class LoginFragment : Fragment() {
     private var userId = -1
