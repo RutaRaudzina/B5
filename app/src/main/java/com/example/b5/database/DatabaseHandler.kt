@@ -5,10 +5,10 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
-val DATABASE_NAME = "adaptive_ui"
-val TABLE_NAME = "users"
-val COL_USER_ID = "user_id"
-val COL_USERNAME = "username"
+const val DATABASE_NAME = "adaptive_ui"
+const val TABLE_NAME = "users"
+const val COL_USER_ID = "user_id"
+const val COL_USERNAME = "username"
 val COL_EMAIL = "email"
 val COL_PASSWORD = "password"
 val COL_AVATAR = "avatar"
@@ -111,7 +111,6 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
     }
 
     fun updateUser(userId: Int, username: String){
-//        var list : MutableList<User> = ArrayList()
         val db = writableDatabase
         val query = "SELECT * FROM $TABLE_NAME"
         val result = db.rawQuery(query, null)
@@ -137,10 +136,7 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         val result = db.rawQuery(query, null)
         if (result.moveToFirst()){
             do {
-//                if (result.getString(0).toInt() == userId &&
-//                    result.getString(1).toInt() == prevFragment &&
-//                    result.getString(2).toInt() == fragmentArrived){
-                    var cv = ContentValues()
+                var cv = ContentValues()
                 cv.put(COL_USER_ID, userId)
                 cv.put(COL_CUR_FRAGMENT, prevFragment)
                 cv.put(COL_FRAGMENT_TO_GO, fragmentArrived)
