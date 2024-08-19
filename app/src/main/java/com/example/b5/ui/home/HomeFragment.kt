@@ -36,6 +36,8 @@ class HomeFragment : Fragment() {
         val db = DatabaseHandler(context)
 
         ext.setStats(db, 0)
+        val stats = ext.readStats(db)
+        println(stats)
 
         return root
     }
