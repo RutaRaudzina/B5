@@ -123,25 +123,37 @@ class MainActivity : AppCompatActivity(), TransferData {
             .setIcon(iconIds[ext.curfragment]);
 
         if (userId > -1) {
-            var buttonObjects : Array<ButtonObject> = emptyArray()
-            menu.add(Menu.NONE, R.id.nav_third, Menu.NONE, getString(R.string.third))
-                .setIcon(R.drawable.three);
-//            fillButtonObjects(buttonObjects)
-//
-//            menu.add(
-//                Menu.NONE, fragmentIds[buttonObjects[1].nextFragmentId],
-//                Menu.NONE, getString(labelStrings[buttonObjects[1].nextFragmentId])
-//            )
-//                .setIcon(iconIds[buttonObjects[1].nextFragmentId])
+            var buttonObjects : MutableList<ButtonObject> = mutableListOf<ButtonObject>()
+            fillButtonObjects(buttonObjects)
+
+            menu.add(
+                Menu.NONE, fragmentIds[buttonObjects[1].nextFragmentId],
+                Menu.NONE, getString(labelStrings[buttonObjects[1].nextFragmentId])
+            )
+                .setIcon(iconIds[buttonObjects[1].nextFragmentId])
+
+            sortButtons(buttonObjects)
         }
 
         menu.add(Menu.NONE, R.id.nav_second, Menu.NONE, getString(R.string.second))
             .setIcon(R.drawable.two);
     }
 
-    fun fillButtonObjects(buttonObjects : Array<ButtonObject>){
+    fun fillButtonObjects(buttonObjects : MutableList<ButtonObject>){
         val stats = ext.readStats(db)
-        for (i in 0 .. 12) buttonObjects[i] = ButtonObject(i, stats[i])
+        for (i in 0 .. stats.size - 1) buttonObjects.add(ButtonObject(i, stats[i]))
+    }
+
+    fun sortButtons(buttonObjects : MutableList<ButtonObject>){
+        for(i in 0..buttonObjects.size - 2){
+            for (j in 0..buttonObjects.size-2-i){
+                if (buttonObjects[j+1].fraction <= buttonObjects[j].fraction)
+                    continue
+                var temp = buttonObjects[j]
+                buttonObjects[j] = buttonObjects[j+1]
+                buttonObjects[j+1] = temp
+            }
+        }
     }
 
 }
