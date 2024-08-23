@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.b5.R
+import com.example.b5.TransferData
 import com.example.b5.database.DatabaseHandler
 import com.example.b5.database.UserClickStats
 import com.example.b5.ext
@@ -15,6 +16,7 @@ import java.util.Queue
 
 
 class FirstFragment : Fragment() {
+    private lateinit var transferData: TransferData
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +28,8 @@ class FirstFragment : Fragment() {
         println("\nFirst fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 1)
+        transferData = activity as TransferData
+        transferData.setBottomMenuButtons()
 
         return root
     }

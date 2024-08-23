@@ -1,6 +1,7 @@
 package com.example.b5
 
 import com.example.b5.database.DatabaseHandler
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.LinkedList
 import java.util.Queue
 
@@ -9,6 +10,7 @@ object ext {
     var curfragment = -1
     var prevfragment = -1
     var isFinished = true
+    lateinit var buttomNavView : BottomNavigationView
 
     fun setStats(db : DatabaseHandler, fragmentId : Int){
         if (isFinished) {
@@ -75,5 +77,9 @@ object ext {
             fraction += s
         }
         return fraction/12.00
+    }
+
+    fun setNavView(buttomNavView: BottomNavigationView){
+        this.buttomNavView = buttomNavView
     }
 }

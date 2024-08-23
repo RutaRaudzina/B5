@@ -13,10 +13,11 @@ import com.example.b5.R
 import com.example.b5.TransferData
 import com.example.b5.database.DatabaseHandler
 import com.example.b5.ext
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class LoginFragment : Fragment() {
     private var userId = -1
-    private lateinit var userIdTransfer: TransferData
+    private lateinit var transferData: TransferData
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,7 +36,7 @@ class LoginFragment : Fragment() {
             findNavController().navigate(R.id.action_nav_login_to_createUserFragment)
         }
 
-        userIdTransfer = activity as TransferData
+        transferData = activity as TransferData
         return root
     }
 
@@ -50,7 +51,8 @@ class LoginFragment : Fragment() {
                 println("User found, id = $userId")
                 val user = db.getSingleUser(userId)
                 this.userId = userId
-                userIdTransfer.transferUserId(userId)
+                transferData.transferUserId(userId)
+                transferData.setBottomMenuButtons()
                 Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_nav_login_to_nav_home)
             }
