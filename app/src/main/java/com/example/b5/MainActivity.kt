@@ -14,9 +14,14 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.navigation.ui.NavigationUI
+import androidx.navigation.ui.onNavDestinationSelected
 import com.example.b5.database.DatabaseHandler
 import com.example.b5.databinding.ActivityMainBinding
 import com.example.b5.ui.fragments.LoginFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlin.reflect.typeOf
 
 class MainActivity : AppCompatActivity(), TransferData {
     private var userId: Int = -1
@@ -45,6 +50,8 @@ class MainActivity : AppCompatActivity(), TransferData {
         navEmail = navHeader.findViewById(R.id.nav_header_email_tv)
         navAvatar = navHeader.findViewById(R.id.nav_header_user_image_iv)
 
+        val stats = ext.readStats(db)
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -54,7 +61,21 @@ class MainActivity : AppCompatActivity(), TransferData {
                 R.id.nav_ninth, R.id.nav_tenth
             ), drawerLayout
         )
+
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
+
+        val menu = bottomNavigationView.getMenu()
+        menu.add(Menu.NONE, R.id.nav_sixth, Menu.NONE, getString(R.string.sixth))
+            .setIcon(R.drawable.six);
+        menu.add(Menu.NONE, R.id.nav_first, Menu.NONE, getString(R.string.first))
+            .setIcon(R.drawable.one);
+        menu.add(Menu.NONE, R.id.nav_second, Menu.NONE, getString(R.string.second))
+            .setIcon(R.drawable.two);
+
+
+
         setupActionBarWithNavController(navController, appBarConfiguration)
+        bottomNavigationView.setupWithNavController(navController)
         navView.setupWithNavController(navController)
     }
 
