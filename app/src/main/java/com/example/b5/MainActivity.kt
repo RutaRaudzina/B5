@@ -14,14 +14,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.onNavDestinationSelected
 import com.example.b5.database.DatabaseHandler
 import com.example.b5.databinding.ActivityMainBinding
-import com.example.b5.ui.fragments.LoginFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlin.reflect.typeOf
 
 class MainActivity : AppCompatActivity(), TransferData {
     private var userId: Int = -1
@@ -32,6 +27,22 @@ class MainActivity : AppCompatActivity(), TransferData {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+    private lateinit var menu : Menu
+
+    private val labelStrings: Array<Int> = arrayOf(
+        R.string.menu_home, R.string.first, R.string.second, R.string.third, R.string.fourth, R.string.fifth,
+        R.string.sixth, R.string.seventh, R.string.eighth, R.string.ninth, R.string.tenth, R.string.login
+    )
+
+    private val iconIds: Array<Int> = arrayOf(
+        R.drawable.home, R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five,
+        R.drawable.six, R.drawable.seven, R.drawable.eight, R.drawable.nine, R.drawable.ten, R.drawable.user
+    )
+
+    private val fragmentIds: Array<Int> = arrayOf(
+        R.id.nav_home, R.id.nav_first, R.id.nav_second, R.id.nav_third, R.id.nav_fourth, R.id.nav_fifth,
+        R.id.nav_sixth, R.id.nav_seventh, R.id.nav_eighth, R.id.nav_ninth, R.id.nav_tenth, R.id.nav_login
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,8 +61,6 @@ class MainActivity : AppCompatActivity(), TransferData {
         navEmail = navHeader.findViewById(R.id.nav_header_email_tv)
         navAvatar = navHeader.findViewById(R.id.nav_header_user_image_iv)
 
-        val stats = ext.readStats(db)
-
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
@@ -63,16 +72,8 @@ class MainActivity : AppCompatActivity(), TransferData {
         )
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
-
-        val menu = bottomNavigationView.getMenu()
-        menu.add(Menu.NONE, R.id.nav_sixth, Menu.NONE, getString(R.string.sixth))
-            .setIcon(R.drawable.six);
-        menu.add(Menu.NONE, R.id.nav_first, Menu.NONE, getString(R.string.first))
-            .setIcon(R.drawable.one);
-        menu.add(Menu.NONE, R.id.nav_second, Menu.NONE, getString(R.string.second))
-            .setIcon(R.drawable.two);
-
-
+        ext.setNavView(bottomNavigationView)
+        setBottomMenuButtons()
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
@@ -110,6 +111,37 @@ class MainActivity : AppCompatActivity(), TransferData {
             ext.userid = this.userId
             println("User id back to main is: ${ext.userid}")
         }
+    }
+
+    override fun setBottomMenuButtons(){
+
+        val bottomNavigationView = ext.buttomNavView
+        menu = bottomNavigationView.getMenu()
+        menu.clear()
+
+        menu.add(Menu.NONE, fragmentIds[ext.curfragment], Menu.NONE, getString(labelStrings[ext.curfragment]))
+            .setIcon(iconIds[ext.curfragment]);
+
+        if (userId > -1) {
+            var buttonObjects : Array<ButtonObject> = emptyArray()
+            menu.add(Menu.NONE, R.id.nav_third, Menu.NONE, getString(R.string.third))
+                .setIcon(R.drawable.three);
+//            fillButtonObjects(buttonObjects)
+//
+//            menu.add(
+//                Menu.NONE, fragmentIds[buttonObjects[1].nextFragmentId],
+//                Menu.NONE, getString(labelStrings[buttonObjects[1].nextFragmentId])
+//            )
+//                .setIcon(iconIds[buttonObjects[1].nextFragmentId])
+        }
+
+        menu.add(Menu.NONE, R.id.nav_second, Menu.NONE, getString(R.string.second))
+            .setIcon(R.drawable.two);
+    }
+
+    fun fillButtonObjects(buttonObjects : Array<ButtonObject>){
+        val stats = ext.readStats(db)
+        for (i in 0 .. 12) buttonObjects[i] = ButtonObject(i, stats[i])
     }
 
 }

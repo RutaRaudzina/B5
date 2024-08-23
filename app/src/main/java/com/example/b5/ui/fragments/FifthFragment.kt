@@ -6,10 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.b5.R
+import com.example.b5.TransferData
 import com.example.b5.database.DatabaseHandler
 import com.example.b5.ext
 
 class FifthFragment : Fragment() {
+    private lateinit var transferData: TransferData
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -21,6 +23,8 @@ class FifthFragment : Fragment() {
         println("\nFifth fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 5)
+        transferData = activity as TransferData
+        transferData.setBottomMenuButtons()
 
         return root
     }
