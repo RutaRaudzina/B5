@@ -29,11 +29,6 @@ class MainActivity : AppCompatActivity(), TransferData {
     private lateinit var binding: ActivityMainBinding
     private lateinit var menu : Menu
 
-    private val labelStrings: Array<Int> = arrayOf(
-        R.string.menu_home, R.string.first, R.string.second, R.string.third, R.string.fourth, R.string.fifth,
-        R.string.sixth, R.string.seventh, R.string.eighth, R.string.ninth, R.string.tenth, R.string.login
-    )
-
     private val iconIds: Array<Int> = arrayOf(
         R.drawable.home, R.drawable.one, R.drawable.two, R.drawable.three, R.drawable.four, R.drawable.five,
         R.drawable.six, R.drawable.seven, R.drawable.eight, R.drawable.nine, R.drawable.ten, R.drawable.user
@@ -116,27 +111,26 @@ class MainActivity : AppCompatActivity(), TransferData {
     override fun setBottomMenuButtons(){
 
         val bottomNavigationView = ext.buttomNavView
+        bottomNavigationView.setItemIconTintList(null)
         menu = bottomNavigationView.getMenu()
         menu.clear()
-
-        menu.add(Menu.NONE, fragmentIds[ext.curfragment], Menu.NONE, getString(labelStrings[ext.curfragment]))
-            .setIcon(iconIds[ext.curfragment]);
 
         if (userId > -1) {
             var buttonObjects : MutableList<ButtonObject> = mutableListOf<ButtonObject>()
             fillButtonObjects(buttonObjects)
-
-            menu.add(
-                Menu.NONE, fragmentIds[buttonObjects[1].nextFragmentId],
-                Menu.NONE, getString(labelStrings[buttonObjects[1].nextFragmentId])
-            )
-                .setIcon(iconIds[buttonObjects[1].nextFragmentId])
-
             sortButtons(buttonObjects)
-        }
 
-        menu.add(Menu.NONE, R.id.nav_second, Menu.NONE, getString(R.string.second))
-            .setIcon(R.drawable.two);
+            for (i in 0 .. 4){
+                if (buttonObjects[i].fraction <= 0) break
+                if (buttonObjects[i].nextFragmentId == ext.curfragment) continue
+                menu.add(
+                    Menu.NONE, fragmentIds[buttonObjects[i].nextFragmentId],
+                    Menu.NONE, ""
+                )
+                    .setIcon(iconIds[buttonObjects[i].nextFragmentId])
+            }
+
+        }
     }
 
     fun fillButtonObjects(buttonObjects : MutableList<ButtonObject>){
