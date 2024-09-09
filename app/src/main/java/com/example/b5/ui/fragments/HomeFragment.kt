@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.b5.R
 import com.example.b5.TransferData
 import com.example.b5.database.DatabaseHandler
+import com.example.b5.databinding.FragmentHomeBinding
 import com.example.b5.ext
 
 
@@ -31,6 +33,7 @@ class HomeFragment : Fragment() {
 
         if (ext.userid > -1){
             transferData = activity as TransferData
+            transferData.setBottomMenuButtons()
         }
 
         root.findViewById<Button>(R.id.task1Btn).setOnClickListener {
