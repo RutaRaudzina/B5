@@ -18,6 +18,11 @@ val COL_CUR_FRAGMENT = "cur_fragment"
 val COL_FRAGMENT_TO_GO = "fragment_to_go"
 val COL_STATS = "stats"
 
+val TABLE_NAME_2 = "tasks"
+val COL_TASK_NR = "task_nr"
+val COL_TIME_DIFF = "time_diff"
+val COL_SEQUENCE = "sequence"
+
 class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,null, 1) {
     override fun onCreate(p0: SQLiteDatabase?) {
         val createTable = "CREATE TABLE " + TABLE_NAME + " (" +
@@ -27,11 +32,21 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                 COL_PASSWORD + " VARCHAR(255), " +
                 COL_AVATAR + " VARCHAR(255)); "
 
-        val createTable2 = "CREATE TABLE $TABLE_NAME_1 ($COL_USER_ID INTEGER, " +
-                "$COL_CUR_FRAGMENT INTEGER, $COL_FRAGMENT_TO_GO INTEGER, $COL_STATS VARCHAR(255));"
+        val createTable2 = "CREATE TABLE $TABLE_NAME_1 (" +
+                "$COL_USER_ID INTEGER, " +
+                "$COL_CUR_FRAGMENT INTEGER, " +
+                "$COL_FRAGMENT_TO_GO INTEGER, " +
+                "$COL_STATS VARCHAR(255));"
+
+        val createTable3 = "CREATE TABLE $TABLE_NAME_2 (" +
+                "$COL_USER_ID INTEGER, " +
+                "$COL_TASK_NR INTEGER, " +
+                "$COL_TIME_DIFF BIGINT, " +
+                "$COL_SEQUENCE VARCHAR(255));"
 
         p0!!.execSQL(createTable)
         p0!!.execSQL(createTable2)
+        p0!!.execSQL(createTable3)
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
@@ -48,7 +63,6 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         var result = db.insert(TABLE_NAME, null, cv)
         if (result == -1.toLong()) println("Insertion failed")
         else {
-            println("User created")
             val query = "SELECT USER_ID FROM $TABLE_NAME WHERE ROWID=$result"
             var userId = 0
             val temp = db.rawQuery(query, null)
@@ -56,7 +70,6 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                 do {
                     userId = temp.getString(0).toInt()
                 } while (temp.moveToNext())
-                println("User id is: $userId")
 
                 for (i in 0 .. 11){
                     for (j in 0 .. 11){
@@ -68,10 +81,21 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                         cv2.put(COL_STATS, userStats.stats)
                         var result2 = db.insert(TABLE_NAME_1, null, cv2)
                         if (result2 == -1.toLong()) println("Stats insertion failed")
-                        else println("stats ${userStats.cur_fragment} inserted successfully")
                     }
                 }
+
+                for (i in 1 .. 2){
+                    val task = Task(userId, i, 0, "")
+                    var cv3 = ContentValues()
+                    cv3.put(COL_USER_ID, task.user_id)
+                    cv3.put(COL_TASK_NR, task.task_nr)
+                    cv3.put(COL_TIME_DIFF, task.time_diff)
+                    cv3.put(COL_SEQUENCE, task.sequence)
+                    var result3 = db.insert(TABLE_NAME_2, null, cv3)
+                    if (result3 == -1.toLong()) println("Task data insertion failed")
+                }
             }
+            println("User created")
         }
     }
 
@@ -227,5 +251,48 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         result.close()
         db.close()
         return stats
+    }
+
+    fun getTaskSequenceData(userId:Int, taskId:Int) : MutableList<Task>{
+        val db = readableDatabase
+        val query = "SELECT * FROM $TABLE_NAME_2 t WHERE t.$COL_USER_ID = $userId" +
+                " AND t.$COL_TASK_NR = $taskId;"
+        val result = db.rawQuery(query, null)
+        var taskData : MutableList<Task> = ArrayList()
+        if (result.moveToFirst()){
+            do {
+                var task = Task()
+                task.user_id = result.getString(0).toInt()
+                task.task_nr = result.getString(1).toInt()
+                task.time_diff = result.getString(2).toLong()
+                task.sequence = result.getString(3)
+                taskData.add(task)
+            } while (result.moveToNext())
+        }
+        result.close()
+        db.close()
+        return taskData
+    }
+
+    fun updateTaskData(userId: Int, taskId: Int, timeDiff : Long, sequence : String){
+        val db = writableDatabase
+        val query = "SELECT * FROM $TABLE_NAME_2 WHERE $COL_USER_ID=$userId" +
+                " AND $COL_TASK_NR=$taskId;"
+        val result = db.rawQuery(query, null)
+        if (result.moveToFirst()){
+            do {
+                var cv = ContentValues()
+                cv.put(COL_USER_ID, userId)
+                cv.put(COL_TASK_NR, taskId)
+                cv.put(COL_TIME_DIFF, timeDiff)
+                cv.put(COL_SEQUENCE, sequence)
+                db.update(TABLE_NAME_2, cv, "$COL_USER_ID=? AND $COL_TASK_NR=?",
+                    arrayOf(userId.toString(), taskId.toString())
+                )
+//                }
+            } while (result.moveToNext())
+        }
+        result.close()
+        db.close()
     }
 }

@@ -9,6 +9,9 @@ object ext {
     var curfragment = -1
     var prevfragment = -1
     var isFinished = true
+    var systemTime : Long = 0
+    var taskNr = 0
+    var sequence : String = ""
 
     fun setStats(db : DatabaseHandler, fragmentId : Int){
         if (isFinished) {
@@ -75,5 +78,10 @@ object ext {
             fraction += s
         }
         return fraction/12.00
+    }
+
+    fun addToSequence(){
+        val temp = sequence + "," + curfragment
+        sequence = temp
     }
 }

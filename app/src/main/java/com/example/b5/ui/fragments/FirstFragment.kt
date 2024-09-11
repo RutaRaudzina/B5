@@ -26,6 +26,9 @@ class FirstFragment : Fragment() {
         println("\nFirst fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 1)
+        if (ext.taskNr != 0){
+            ext.addToSequence()
+        }
 
         return root
     }

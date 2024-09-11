@@ -20,6 +20,9 @@ class ThirdFragment : Fragment() {
         println("\nThird fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 3)
+        if (ext.taskNr != 0){
+            ext.addToSequence()
+        }
 
         return root
     }

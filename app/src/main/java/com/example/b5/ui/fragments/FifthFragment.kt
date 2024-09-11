@@ -21,6 +21,9 @@ class FifthFragment : Fragment() {
         println("\nFifth fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 5)
+        if (ext.taskNr != 0){
+            ext.addToSequence()
+        }
 
         return root
     }
