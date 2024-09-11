@@ -76,7 +76,7 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
 
                 for (i in 0 .. 11){
                     for (j in 0 .. 11){
-                        val userStats = UserClickStats(userId, i, j, "0,0,0,0,0,0,0,0,0,0,0,0")
+                        val userStats = UserClickStats(userId, i, j, "0,0,0,0,0,0,0,0,0,0")
                         var cv2 = ContentValues()
                         cv2.put(COL_USER_ID, userStats.user_id)
                         cv2.put(COL_CUR_FRAGMENT, userStats.cur_fragment)
