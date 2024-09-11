@@ -34,16 +34,39 @@ class HomeFragment : Fragment() {
         if (ext.userid > -1){
             transferData = activity as TransferData
             transferData.setBottomMenuButtons()
+            if (ext.taskNr != 0){
+                ext.addToSequence()
+            }
         }
 
-        root.findViewById<Button>(R.id.task1Btn).setOnClickListener {
+        getTaskCompletionTime(db)
 
+        root.findViewById<Button>(R.id.task1Btn).setOnClickListener {
+            ext.taskNr = 1
+            ext.systemTime = System.currentTimeMillis()
+            ext.sequence = "0"
         }
 
         root.findViewById<Button>(R.id.task2Btn).setOnClickListener {
-
+            ext.taskNr = 2
+            ext.systemTime = System.currentTimeMillis()
+            ext.sequence = "0"
         }
 
         return root
+    }
+
+    fun getTaskCompletionTime(db:DatabaseHandler){
+        if (ext.userid < 0 || ext.taskNr == 0) return
+        val time = System.currentTimeMillis()
+        val timeDifference = time - ext.systemTime
+        println("Sequence is: ${ext.sequence}")
+        db.updateTaskData(ext.userid, ext.taskNr, timeDifference, ext.sequence)
+        val taskData = db.getTaskSequenceData(ext.userid, ext.taskNr)
+        println("Task data are: Userid ${taskData[0].user_id}, " +
+                "taskNr ${taskData[0].task_nr}, timeDiff ${taskData[0].time_diff}, " +
+                "sequence ${taskData[0].sequence}")
+        ext.taskNr = 0
+        ext.systemTime = 0
     }
 }

@@ -24,6 +24,9 @@ class SeventhFragment : Fragment() {
         ext.setStats(db, 7)
         transferData = activity as TransferData
         transferData.setBottomMenuButtons()
+        if (ext.taskNr != 0){
+            ext.addToSequence()
+        }
 
         return root
     }

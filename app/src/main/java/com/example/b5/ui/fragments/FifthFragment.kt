@@ -25,6 +25,9 @@ class FifthFragment : Fragment() {
         ext.setStats(db, 5)
         transferData = activity as TransferData
         transferData.setBottomMenuButtons()
+        if (ext.taskNr != 0){
+            ext.addToSequence()
+        }
 
         return root
     }

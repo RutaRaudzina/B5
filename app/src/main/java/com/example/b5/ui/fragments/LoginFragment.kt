@@ -28,6 +28,9 @@ class LoginFragment : Fragment() {
         println("\nLogin fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 11)
+        if (ext.taskNr != 0){
+            ext.addToSequence()
+        }
 
         root.findViewById<Button>(R.id.login_login_btn).setOnClickListener {
             loginUser(root, db)

@@ -11,6 +11,9 @@ object ext {
     var prevfragment = -1
     var isFinished = true
     lateinit var buttomNavView : BottomNavigationView
+    var systemTime : Long = 0
+    var taskNr = 0
+    var sequence : String = ""
 
     fun setStats(db : DatabaseHandler, fragmentId : Int){
         if (isFinished) {
@@ -81,5 +84,10 @@ object ext {
 
     fun setNavView(buttomNavView: BottomNavigationView){
         this.buttomNavView = buttomNavView
+    }
+
+    fun addToSequence(){
+        val temp = sequence + "," + curfragment
+        sequence = temp
     }
 }
