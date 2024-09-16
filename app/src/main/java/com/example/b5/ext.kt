@@ -1,5 +1,6 @@
 package com.example.b5
 
+import android.view.View
 import com.example.b5.database.DatabaseHandler
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import java.util.LinkedList
@@ -14,6 +15,8 @@ object ext {
     var systemTime : Long = 0
     var taskNr = 0
     var sequence : String = ""
+    var activateAUI = false
+    var buttonsCount = 5
 
     fun setStats(db : DatabaseHandler, fragmentId : Int){
         if (isFinished) {
@@ -39,7 +42,7 @@ object ext {
 
                     val finStr : MutableList<String> = ArrayList<String>()
                     queueToString("", queue, 0, finStr)
-                    db.updateSingleStats(userid, s.cur_fragment, s.frgment_to_go, finStr[10])
+                    db.updateSingleStats(userid, s.cur_fragment, s.frgment_to_go, finStr[18])
                     !isFinished
                 }
             }
@@ -67,7 +70,7 @@ object ext {
             val temp = queue.elementAt(i).toString()
             queueToString(temp, queue, 1, finArray)
         }
-        else if (i < 12){
+        else if (i < 20){
             val temp = "," + queue.elementAt(i).toString()
             finArray.add(str.plus(temp))
             queueToString(str.plus(temp), queue, i + 1, finArray)
@@ -79,11 +82,16 @@ object ext {
         for (s in stats){
             fraction += s
         }
-        return fraction/12.00
+        return fraction/20.00
     }
 
     fun setNavView(buttomNavView: BottomNavigationView){
         this.buttomNavView = buttomNavView
+    }
+
+    fun navViewVisibility(){
+        if (activateAUI) this.buttomNavView.visibility = View.VISIBLE
+        else this.buttomNavView.visibility = View.GONE
     }
 
     fun addToSequence(){

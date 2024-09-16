@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity(), TransferData {
 
         val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNav)
         ext.setNavView(bottomNavigationView)
-        setBottomMenuButtons()
+        setBottomMenuButtons(ext.buttonsCount)
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         bottomNavigationView.setupWithNavController(navController)
@@ -108,7 +108,7 @@ class MainActivity : AppCompatActivity(), TransferData {
         }
     }
 
-    override fun setBottomMenuButtons(){
+    override fun setBottomMenuButtons(buttonsCount : Int){
 
         val bottomNavigationView = ext.buttomNavView
         bottomNavigationView.setItemIconTintList(null)
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), TransferData {
             fillButtonObjects(buttonObjects)
             sortButtons(buttonObjects)
 
-            for (i in 0 .. 4){
+            for (i in 0 .. buttonsCount -1){
                 if (buttonObjects[i].fraction <= 0) break
                 if (buttonObjects[i].nextFragmentId == ext.curfragment) continue
                 menu.add(

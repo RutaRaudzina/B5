@@ -25,12 +25,13 @@ class LoginFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val root = inflater.inflate(R.layout.fragment_login, container, false)
+
         println("\nLogin fragment")
         val db = DatabaseHandler(context)
         ext.setStats(db, 11)
-        if (ext.taskNr != 0){
-            ext.addToSequence()
-        }
+        transferData = activity as TransferData
+        if (ext.activateAUI) transferData.setBottomMenuButtons(ext.buttonsCount)
+        if (ext.taskNr != 0) ext.addToSequence()
 
         root.findViewById<Button>(R.id.login_login_btn).setOnClickListener {
             loginUser(root, db)
@@ -55,7 +56,7 @@ class LoginFragment : Fragment() {
                 val user = db.getSingleUser(userId)
                 this.userId = userId
                 transferData.transferUserId(userId)
-                transferData.setBottomMenuButtons()
+                transferData.setBottomMenuButtons(ext.buttonsCount)
                 Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_nav_login_to_nav_home)
             }

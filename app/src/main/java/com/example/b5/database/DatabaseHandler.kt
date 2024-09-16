@@ -22,6 +22,7 @@ val TABLE_NAME_2 = "tasks"
 val COL_TASK_NR = "task_nr"
 val COL_TIME_DIFF = "time_diff"
 val COL_SEQUENCE = "sequence"
+val COL_AUI_ACTIVATED = "AUI_activated"
 
 class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NAME,null, 1) {
     override fun onCreate(p0: SQLiteDatabase?) {
@@ -42,7 +43,8 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                 "$COL_USER_ID INTEGER, " +
                 "$COL_TASK_NR INTEGER, " +
                 "$COL_TIME_DIFF BIGINT, " +
-                "$COL_SEQUENCE VARCHAR(255));"
+                "$COL_SEQUENCE VARCHAR(255), " +
+                "$COL_AUI_ACTIVATED BOOLEAN);"
 
 
         p0!!.execSQL(createTable)
@@ -76,7 +78,33 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
 
                 for (i in 0 .. 11){
                     for (j in 0 .. 11){
-                        val userStats = UserClickStats(userId, i, j, "0,0,0,0,0,0,0,0,0,0")
+                        var stats : String
+                        if ((i == 0 && j == 9) || (i == 9 && j == 8) || (i == 9 && j == 6)
+                            || (i == 8 && j == 4) || (i == 4 && j == 1) || (i == 4 && j == 11)
+                            || (i == 1 && j == 9) || (i == 10 && j == 0) || (i == 6 && j == 5)
+                            || (i == 5 && j == 4) || (i == 11 && j == 10))
+                            stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1"
+                        else if ((i == 9 && j == 3) || (i == 0 && j == 4) || (i == 0 && j == 8)
+                            || (i == 8 && j == 1) || (i == 5 && j == 7) || (i == 5 && j == 11)
+                            || (i == 4 && j == 7) || (i == 1 && j == 4) || (i == 1 && j == 3)
+                            || (i == 10 && j == 2) || (i == 10 && j == 11) || (i == 6 && j == 4)
+                            || (i == 6 && j == 8) || (i == 5 && j == 9) || (i == 5 && j == 10)
+                            || (i == 11 && j == 5) || (i == 11 && j == 6) || (i == 8 && j == 11))
+                            stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1"
+                        else if ((i == 9 && j == 11) || (i == 9 && j == 5) || (i == 0 && j == 5)
+                            || (i == 0 && j == 7) || (i == 8 && j == 7) || (i == 8 && j == 6)
+                            || (i == 5 && j == 2) || (i == 5 && j == 3) || (i == 4 && j == 10)
+                            || (i == 4 && j == 6) || (i == 1 && j == 7) || (i == 1 && j == 5)
+                            || (i == 10 && j == 3) || (i == 10 && j == 7) || (i == 6 && j == 7)
+                            || (i == 6 && j == 2) || (i == 5 && j == 6) || (i == 5 && j == 8)
+                            || (i == 11 && j == 3) || (i == 11 && j == 1))
+                            stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1"
+                        else stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+                        val userStats = UserClickStats(userId, i, j, stats)
+
+                        //Normal initial db data
+//                        val userStats = UserClickStats(userId, i, j, "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
+
                         var cv2 = ContentValues()
                         cv2.put(COL_USER_ID, userStats.user_id)
                         cv2.put(COL_CUR_FRAGMENT, userStats.cur_fragment)
@@ -84,10 +112,10 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                         cv2.put(COL_STATS, userStats.stats)
                         var result2 = db.insert(TABLE_NAME_1, null, cv2)
                         if (result2 == -1.toLong()) println("Stats insertion failed")
-                        else println("stats ${userStats.cur_fragment} inserted successfully")
                     }
                 }
             }
+            println("User created")
         }
     }
 
@@ -245,10 +273,10 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         return stats
     }
 
-    fun getTaskSequenceData(userId:Int, taskId:Int) : MutableList<Task>{
+    fun getTaskSequenceData(userId:Int, taskId:Int, activatedAUI:Boolean) : MutableList<Task>{
         val db = readableDatabase
         val query = "SELECT * FROM $TABLE_NAME_2 t WHERE t.$COL_USER_ID = $userId" +
-                " AND t.$COL_TASK_NR = $taskId;"
+                " AND t.$COL_TASK_NR = $taskId AND t.$COL_AUI_ACTIVATED = $activatedAUI;"
         val result = db.rawQuery(query, null)
         var taskData : MutableList<Task> = ArrayList()
         if (result.moveToFirst()){
@@ -258,6 +286,7 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                 task.task_nr = result.getString(1).toInt()
                 task.time_diff = result.getString(2).toLong()
                 task.sequence = result.getString(3)
+                task.activatedAUI = result.getString(4).toBoolean()
                 taskData.add(task)
             } while (result.moveToNext())
         }
@@ -266,25 +295,17 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
         return taskData
     }
 
-    fun updateTaskData(userId: Int, taskId: Int, timeDiff : Long, sequence : String){
-        val db = writableDatabase
-        val query = "SELECT * FROM $TABLE_NAME_2 WHERE $COL_USER_ID=$userId" +
-                " AND $COL_TASK_NR=$taskId;"
-        val result = db.rawQuery(query, null)
-        if (result.moveToFirst()){
-            do {
-                var cv = ContentValues()
-                cv.put(COL_USER_ID, userId)
-                cv.put(COL_TASK_NR, taskId)
-                cv.put(COL_TIME_DIFF, timeDiff)
-                cv.put(COL_SEQUENCE, sequence)
-                db.update(TABLE_NAME_2, cv, "$COL_USER_ID=? AND $COL_TASK_NR=?",
-                    arrayOf(userId.toString(), taskId.toString())
-                )
-//                }
-            } while (result.moveToNext())
-        }
-        result.close()
+    fun updateTaskData(userId: Int, taskId: Int, timeDiff : Long, sequence : String, activatedAUI:Boolean){
+        val db = this.writableDatabase
+        val task = Task(userId, taskId, timeDiff, sequence, activatedAUI)
+        var cv = ContentValues()
+        cv.put(COL_USER_ID, task.user_id)
+        cv.put(COL_TASK_NR, task.task_nr)
+        cv.put(COL_TIME_DIFF, task.time_diff)
+        cv.put(COL_SEQUENCE, task.sequence)
+        cv.put(COL_AUI_ACTIVATED, task.activatedAUI)
+        var result3 = db.insert(TABLE_NAME_2, null, cv)
+        if (result3 == -1.toLong()) println("Task data insertion failed")
         db.close()
     }
 }

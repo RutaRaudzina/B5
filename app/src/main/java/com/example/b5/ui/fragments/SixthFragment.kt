@@ -23,10 +23,8 @@ class SixthFragment : Fragment() {
         val db = DatabaseHandler(context)
         ext.setStats(db, 6)
         transferData = activity as TransferData
-        transferData.setBottomMenuButtons()
-        if (ext.taskNr != 0){
-            ext.addToSequence()
-        }
+        if (ext.activateAUI) transferData.setBottomMenuButtons(ext.buttonsCount)
+        if (ext.taskNr != 0) ext.addToSequence()
 
         return root
     }

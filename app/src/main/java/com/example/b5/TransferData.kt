@@ -5,5 +5,5 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 interface TransferData {
     fun transferUserId(userId: Int)
 
-    fun setBottomMenuButtons()
+    fun setBottomMenuButtons(buttonsCount : Int)
 }
