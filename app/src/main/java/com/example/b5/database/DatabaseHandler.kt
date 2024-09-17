@@ -79,26 +79,45 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
                 for (i in 0 .. 11){
                     for (j in 0 .. 11){
                         var stats : String
-                        if ((i == 0 && j == 9) || (i == 9 && j == 8) || (i == 9 && j == 6)
-                            || (i == 8 && j == 4) || (i == 4 && j == 1) || (i == 4 && j == 11)
-                            || (i == 1 && j == 9) || (i == 10 && j == 0) || (i == 6 && j == 5)
-                            || (i == 5 && j == 4) || (i == 11 && j == 10))
+                        if ((i == 0 && j == 8)
+                            || (i == 1 && j == 4)
+                            || (i == 2 && j == 11)
+                            || (i == 3 && j == 5)
+                            || (i == 4 && j == 1) || (i == 4 && j == 7)
+                            || (i == 5 && j == 10)
+                            || (i == 6 && j == 8)
+                            || (i == 7 && j == 3)
+                            || (i == 8 && j == 4)
+                            || (i == 9 && j == 8)  || (i == 9 && j == 3)
+                            || (i == 10 && j == 11)
+                            || (i == 11 && j == 10))
+                            stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1"
+                        else if ((i == 0 && j == 4) || (i == 0 && j == 9)
+                            || (i == 1 && j == 3) || (i == 1 && j == 9)
+                            || (i == 2 && j == 11) || (i == 2 && j == 5)
+                            || (i == 3 && j == 4) || (i == 3 && j == 8)
+                            || (i == 4 && j == 11)
+                            || (i == 5 && j == 9) || (i == 5 && j == 4) || (i == 5 && j == 7)
+                            || (i == 6 && j == 4) || (i == 6 && j == 5)
+                            || (i == 7 && j == 6) || (i == 7 && j == 8)
+                            || (i == 8 && j == 1) || (i == 8 && j == 11)
+                            || (i == 9 && j == 6)
+                            || (i == 10 && j == 0) || (i == 10 && j == 2)
+                            || (i == 11 && j == 5) || (i == 11 && j == 6))
                             stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1"
-                        else if ((i == 9 && j == 3) || (i == 0 && j == 4) || (i == 0 && j == 8)
-                            || (i == 8 && j == 1) || (i == 5 && j == 7) || (i == 5 && j == 11)
-                            || (i == 4 && j == 7) || (i == 1 && j == 4) || (i == 1 && j == 3)
-                            || (i == 10 && j == 2) || (i == 10 && j == 11) || (i == 6 && j == 4)
-                            || (i == 6 && j == 8) || (i == 5 && j == 9) || (i == 5 && j == 10)
-                            || (i == 11 && j == 5) || (i == 11 && j == 6) || (i == 8 && j == 11))
+                        else if ((i == 0 && j == 5) || (i == 0 && j == 7)
+                            || (i == 1 && j == 7) || (i == 1 && j == 5)
+                            || (i == 2 && j == 3)
+                            || (i == 3 && j == 1) || (i == 3 && j == 10)
+                            || (i == 4 && j == 10) || (i == 4 && j == 6)
+                            || (i == 5 && j == 2) || (i == 5 && j == 3)
+                            || (i == 6 && j == 7) || (i == 6 && j == 2)
+                            || (i == 7 && j == 11) || (i == 7 && j == 1)
+                            || (i == 8 && j == 7) || (i == 8 && j == 6)
+                            || (i == 9 && j == 5) || (i == 9 && j == 11)
+                            || (i == 10 && j == 3) || (i == 10 && j == 7)
+                            || (i == 11 && j == 0) || (i == 11 && j == 1))
                             stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1"
-                        else if ((i == 9 && j == 11) || (i == 9 && j == 5) || (i == 0 && j == 5)
-                            || (i == 0 && j == 7) || (i == 8 && j == 7) || (i == 8 && j == 6)
-                            || (i == 5 && j == 2) || (i == 5 && j == 3) || (i == 4 && j == 10)
-                            || (i == 4 && j == 6) || (i == 1 && j == 7) || (i == 1 && j == 5)
-                            || (i == 10 && j == 3) || (i == 10 && j == 7) || (i == 6 && j == 7)
-                            || (i == 6 && j == 2) || (i == 5 && j == 6) || (i == 5 && j == 8)
-                            || (i == 11 && j == 3) || (i == 11 && j == 1))
-                            stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1"
                         else stats = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
                         val userStats = UserClickStats(userId, i, j, stats)
 
@@ -275,8 +294,12 @@ class DatabaseHandler(context: Context?) : SQLiteOpenHelper(context, DATABASE_NA
 
     fun getTaskSequenceData(userId:Int, taskId:Int, activatedAUI:Boolean) : MutableList<Task>{
         val db = readableDatabase
+        var k : Int = 0
+        if (activatedAUI) k = 1
+        else k = 0
+
         val query = "SELECT * FROM $TABLE_NAME_2 t WHERE t.$COL_USER_ID = $userId" +
-                " AND t.$COL_TASK_NR = $taskId AND t.$COL_AUI_ACTIVATED = $activatedAUI;"
+                " AND t.$COL_TASK_NR = $taskId AND t.$COL_AUI_ACTIVATED = $k;"
         val result = db.rawQuery(query, null)
         var taskData : MutableList<Task> = ArrayList()
         if (result.moveToFirst()){

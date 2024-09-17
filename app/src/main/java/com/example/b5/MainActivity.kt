@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), TransferData {
                 )
                     .setIcon(iconIds[buttonObjects[i].nextFragmentId])
             }
-
+            ext.navViewVisibility()
         }
     }
 

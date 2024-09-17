@@ -56,7 +56,7 @@ class LoginFragment : Fragment() {
                 val user = db.getSingleUser(userId)
                 this.userId = userId
                 transferData.transferUserId(userId)
-                transferData.setBottomMenuButtons(ext.buttonsCount)
+//                transferData.setBottomMenuButtons(ext.buttonsCount)
                 Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_LONG).show()
                 findNavController().navigate(R.id.action_nav_login_to_nav_home)
             }

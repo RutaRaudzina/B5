@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.findFragment
+import androidx.navigation.fragment.findNavController
 import com.example.b5.R
 import com.example.b5.TransferData
 import com.example.b5.database.DatabaseHandler
@@ -28,8 +31,8 @@ class HomeFragment : Fragment() {
         ext.setStats(db, 0)
         val stats = ext.readStats(db)
         println(stats)
-        if (ext.activateAUI) root.findViewById<Button>(R.id.activateAUIbtn).setText("Activate AUI")
-        else root.findViewById<Button>(R.id.activateAUIbtn).setText("Deactivate AUI")
+        if (ext.activateAUI) root.findViewById<Button>(R.id.activateAUIbtn).setText("Dectivate AUI")
+        else root.findViewById<Button>(R.id.activateAUIbtn).setText("Activate AUI")
 
         if (ext.buttonsCount == 5)
             root.findViewById<Button>(R.id.buttonsCountBtn).setText("Set to 3 buttons")
@@ -87,6 +90,7 @@ class HomeFragment : Fragment() {
             if (ext.activateAUI) root.findViewById<Button>(R.id.activateAUIbtn).setText("Deactivate AUI")
             else root.findViewById<Button>(R.id.activateAUIbtn).setText("Activate AUI")
             ext.navViewVisibility()
+            refreshFragment()
         }
 
         root.findViewById<Button>(R.id.buttonsCountBtn).setOnClickListener {
@@ -98,6 +102,7 @@ class HomeFragment : Fragment() {
                 ext.buttonsCount = 5
                 root.findViewById<Button>(R.id.buttonsCountBtn).setText("Set to 3 buttons")
             }
+            refreshFragment()
         }
 
         return root
@@ -117,5 +122,13 @@ class HomeFragment : Fragment() {
         ext.taskNr = 0
         ext.systemTime = 0
 //        ext.buttonsCount = 5
+    }
+
+    fun refreshFragment(){
+//        val ft = parentFragmentManager.beginTransaction()
+//        ft.detach(this).attach(this).commit()
+        val id = findNavController().currentDestination?.id
+        findNavController().popBackStack(id!!,true)
+        findNavController().navigate(id)
     }
 }
