@@ -104,7 +104,6 @@ class HomeFragment : Fragment() {
             }
             refreshFragment()
         }
-
         return root
     }
 
@@ -121,12 +120,9 @@ class HomeFragment : Fragment() {
         Toast.makeText(requireContext(), "Task ${ext.taskNr} finished.", Toast.LENGTH_LONG).show()
         ext.taskNr = 0
         ext.systemTime = 0
-//        ext.buttonsCount = 5
     }
 
     fun refreshFragment(){
-//        val ft = parentFragmentManager.beginTransaction()
-//        ft.detach(this).attach(this).commit()
         val id = findNavController().currentDestination?.id
         findNavController().popBackStack(id!!,true)
         findNavController().navigate(id)
