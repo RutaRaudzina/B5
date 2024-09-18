@@ -90,8 +90,8 @@ object ext {
     }
 
     fun navViewVisibility(){
-        if (activateAUI) this.buttomNavView.visibility = View.VISIBLE
-        else this.buttomNavView.visibility = View.GONE
+        if (!activateAUI && buttonsCount == 5) this.buttomNavView.visibility = View.GONE
+        else this.buttomNavView.visibility = View.VISIBLE
     }
 
     fun addToSequence(){
